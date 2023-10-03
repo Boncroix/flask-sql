@@ -42,4 +42,4 @@ class DBManager:
         conexion.close()
 
         # 6. Devolver los resultados
-        return nombres_columna
+        return self.registros
