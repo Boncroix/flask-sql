@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block contentenido %}
+{% block contenido %}
 
 <form action="/editar">
     {{ form.csrf_token }}
@@ -9,7 +9,7 @@
 
     <div class="campo-formulario">
         {{ form.fecha.label }}
-        {{ form.fecha }}
+        {{ form.fecha}}
     </div>
 
     <div class="campo-formulario">
@@ -18,10 +18,10 @@
     </div>
 
     <div class="campo-formulario">
-        {{% for campo in form.tipo %}}
+        {% for campo in form.tipo %}
         {{ campo }}
         {{ campo.label }}
-        {{% endfor %}}
+        {% endfor %}
     </div>
 
     <div class="campo-formulario">
@@ -35,8 +35,7 @@
 
 </form>
 
-
-{% endblock contentenido %}
+{% endblock contenido %}
 
 {% block page_title %}
 <h1>Editar movimiento</h1>
