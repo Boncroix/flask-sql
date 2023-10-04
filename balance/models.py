@@ -1,3 +1,4 @@
+from datetime import date
 import sqlite3
 
 
@@ -63,3 +64,23 @@ class DBManager:
 
         conexion.close()
         return resultado
+
+    def editar(self, id):
+        sql = 'SELECT id, fecha, concepto, tipo, cantidad FROM movimientos WHERE id=?'
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        cursor.execute(sql, (id,))
+        datos = cursor.fetchall()
+        self.nombres_columna = []
+        for columna in cursor.description:
+            self.nombres_columna.append(columna[0])
+
+        movimiento = {}
+        indice = 0
+        for nombre in self.nombres_columna:
+            if nombre == 'fecha':
+                movimiento[nombre] = date.fromisoformat(datos[0][indice])
+            else:
+                movimiento[nombre] = datos[0][indice]
+            indice += 1
+        return movimiento
