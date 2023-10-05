@@ -1,6 +1,6 @@
 from datetime import date
 
-from flask import redirect, render_template, request, url_for
+from flask import flash, redirect, render_template, request, url_for
 
 from . import RUTA, app
 from .forms import MovimientoForm
@@ -24,6 +24,11 @@ def home():
 def eliminar(id):
     db = DBManager(RUTA)
     ha_ido_bien = db.borrar(id)
+    # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
+    # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
+    #   - Incluir un texto con la pregunta
+    #   - Incluir un botón aceptar que hace la eliminación y vuelve al listado (con mensaje flash)
+    #   - Incluir un botón cancelar que vuelve al inicio SIN eliminar el movimiento
     return render_template('borrado.html', resultado=ha_ido_bien)
 
 
@@ -49,7 +54,20 @@ def actualizar(id):
             )
             resultado = db.consultaConParametros(consulta, parametros)
             if resultado:
+                flash('El movimiento se ha actualizado correctamente',
+                      category="exito")
                 return redirect(url_for('home'))
             return "El movimiento no se ha podido guardar en la base de datos"
         else:
-            return form.errors
+            # TODO: pintar los mensajes de error junto al campo que lo provoca
+            errores = []
+            for key in form.errors:
+                errores.append((key, form.errors[key]))
+            return render_template('form_movimiento.html', form=form, id=id, errors=errores)
+
+
+@app.route('/nuevo')
+def crear_movimiento():
+    # TODO: reutilizar el formulario para crear movimientos nuevos
+    consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
+    pass
