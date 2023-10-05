@@ -35,6 +35,7 @@ def actualizar(id):
         return render_template('form_movimiento.html', form=formulario)
     return f'TODO: tratar el método POST para actualizar el movimiento {id}'
 
+
 @app.route('/editar1/<int:id>')
 def editar(id):
     if request.method == 'GET':
