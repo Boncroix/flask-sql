@@ -81,13 +81,15 @@ class DBManager:
             nombres_columnas = []
             for columna in cursor.description:
                 nombres_columnas.append(columna[0])
-                #
-            movimiento = {}                         # Crear diccionario con los datos leidos
-            indice = 0                              #
-            for nombre in nombres_columnas:
+
+            movimiento = {}                         #
+            indice = 0                              # Crear diccionario con los datos leidos
+            for nombre in nombres_columnas:         #
                 movimiento[nombre] = datos[indice]
                 indice += 1
-                resultados = movimiento
+
+            movimiento['fecha'] = date.fromisoformat(movimiento['fecha'])
+            resultado = movimiento
 
         conexion.close()
         return resultado
