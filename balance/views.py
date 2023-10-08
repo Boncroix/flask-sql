@@ -24,6 +24,10 @@ def home():
 def eliminar(id):
     db = DBManager(RUTA)
     ha_ido_bien = db.borrar(id)
+    if ha_ido_bien:
+        flash('El movimiento se ha borrado correctamente',
+              category="exito")
+        return redirect(url_for('home'))
     # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
     # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
     #   - Incluir un texto con la pregunta
@@ -57,17 +61,37 @@ def actualizar(id):
                 flash('El movimiento se ha actualizado correctamente',
                       category="exito")
                 return redirect(url_for('home'))
-            return "El movimiento no se ha podido guardar en la base de datos"
+            flash('El movimiento no se ha podido guardar en la base de datos',
+                  category="error")
+            return redirect(url_for('home'))
         else:
-            # TODO: pintar los mensajes de error junto al campo que lo provoca
-            errores = []
-            for key in form.errors:
-                errores.append((key, form.errors[key]))
-            return render_template('form_movimiento.html', form=form, id=id, errors=errores)
+            return render_template('form_movimiento.html', form=form, id=id, errors=form.errors)
 
 
-@app.route('/nuevo')
+@app.route('/nuevo', methods=['GET', 'POST'])
 def crear_movimiento():
-    # TODO: reutilizar el formulario para crear movimientos nuevos
-    consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
-    pass
+    if request.method == 'GET':
+        formulario = MovimientoForm()
+        return render_template('nuevo.html', form=formulario)
+
+    if request.method == 'POST':
+        form = MovimientoForm()
+        if form.validate():
+            db = DBManager(RUTA)
+            consulta = 'INSERT INTO movimientos (fecha,concepto,tipo,cantidad) VALUES (?,?,?,?)'
+            parametros = (
+                form.fecha.data,
+                form.concepto.data,
+                form.tipo.data,
+                float(form.cantidad.data)
+            )
+            resultado = db.consultaConParametros(consulta, parametros)
+            if resultado:
+                flash('El movimiento se ha registrado correctamente',
+                      category="exito")
+                return redirect(url_for('home'))
+            flash('El movimiento no se ha podido guardar en la base de datos',
+                  category="error")
+            return redirect(url_for('home'))
+        else:
+            return render_template('/nuevo.html', form=form, id=id, errors=form.errors)

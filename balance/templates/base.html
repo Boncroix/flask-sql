@@ -18,10 +18,24 @@
     {% include 'components/navbar.html' %}
 
     <main>
-        {% with mensajes = get_flashed_messages() %}
+        {% with mensajes = get_flashed_messages(category_filter=['exito']) %}
         {% if mensajes %}
         <div class="exito-flash">
             <p><i class="fa-solid fa-circle-check fa-2xl" style="color: #1dc347;"></i></p>
+
+            <div class="mensajes-flash">
+                {% for msg in mensajes %}
+                <p>{{ msg }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% with mensajes = get_flashed_messages(category_filter=['error']) %}
+        {% if mensajes %}
+        <div class="error-flash">
+            <p><i class="fa-solid fa-bomb fa-2xl" style="color: #c92c2c;"></i></p>
 
             <div class="mensajes-flash">
                 {% for msg in mensajes %}

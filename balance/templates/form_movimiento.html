@@ -2,7 +2,7 @@
 
 {% block contenido %}
 
-{% if errors %}
+<!-- {% if errors %}
 <div class="lista-errores">
     <i class="fa-solid fa-bomb fa-2xl" style="color: #c92c2c;"></i>
     Revisa los errores
@@ -15,7 +15,7 @@
     </ul>
     {% endfor %}
 </div>
-{% endif %}
+{% endif %} -->
 
 <form action="/editar/{{ id }}" method="post" novalidate>
     {{ form.csrf_token }}
@@ -25,11 +25,23 @@
     <div class="campo-formulario">
         {{ form.fecha.label }}
         {{ form.fecha}}
+        {% if 'fecha' in form.errors %}
+        <span class="mensaje-error">
+            *
+            {{ form.errors['fecha'][0] }}
+        </span>
+        {% endif %}
     </div>
 
     <div class="campo-formulario">
         {{ form.concepto.label }}
         {{ form.concepto }}
+        {% if 'concepto' in form.errors %}
+        <span class="mensaje-error">
+            *
+            {{ form.errors['concepto'][0] }}
+        </span>
+        {% endif %}
     </div>
 
     <div class="campo-formulario">
@@ -37,11 +49,23 @@
         {{ campo }}
         {{ campo.label }}
         {% endfor %}
+        {% if 'tipo' in form.errors %}
+        <span class="mensaje-error">
+            *
+            {{ form.errors['tipo'][0] }}
+        </span>
+        {% endif %}
     </div>
 
     <div class="campo-formulario">
         {{ form.cantidad.label }}
         {{ form.cantidad }}
+        {% if 'cantidad' in form.errors %}
+        <span class="mensaje-error">
+            *
+            {{ form.errors['cantidad'][0] }}
+        </span>
+        {% endif %}
     </div>
 
     <div class="acciones">

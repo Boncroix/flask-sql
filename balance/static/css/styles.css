@@ -103,6 +103,7 @@ a.mini-boton:hover {
 .mensaje-error {
     color: #600;
     font-weight: bold;
+    padding: 20px;
 }
 
 .exito-flash {
@@ -110,6 +111,17 @@ a.mini-boton:hover {
     background-color: rgba(0, 200, 0, .25);
     padding: 2rem;
     color: darkgreen;
+    font-weight: bold;
+    border-radius: 4px;
+    display: flex;
+    gap: 1rem;
+}
+
+.error-flash {
+    font-size: 1rem;
+    background-color: rgba(255, 0, 0, .3);
+    padding: 2rem;
+    color: darkred;
     font-weight: bold;
     border-radius: 4px;
     display: flex;
