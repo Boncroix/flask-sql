@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 
 {% block contenido%}
+<form action="/borrar/{{ id }}" method="post" novalidate>
+    {{ form.csrf_token }}
 
-{% if resultado %}
-<p>El movimiento ha sido eliminado correctamente.</p>
-{% else %}
-<p>El movimiento no se ha podido eliminar. Inténtalo en
-    otro momento
-</p>
-{% endif %}
+    {{ form.id }}
 
-<p>Pulsa <a href="/">aquí</a> para volver al listado de movimientos.</p>
+    <div class="confirmacion-borrar">
+        <p>¿Está seguro que desea borrar el movimiento?</p>
+        {{ form.aceptar }}
+        {{ form.cancelar }}
+    </div>
+
+</form>
+
 
 {% endblock contenido %}
+{% block page_title %}
+<h1>Borrar movimiento</h1>
+{% endblock page_title %}

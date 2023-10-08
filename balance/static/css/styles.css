@@ -127,3 +127,13 @@ a.mini-boton:hover {
     display: flex;
     gap: 1rem;
 }
+
+.confirmacion-borrar {
+    font-size: 1rem;
+    background-color: rgb(163, 173, 182);
+    padding: 2rem;
+    font-weight: bold;
+    border-radius: 4px;
+    display: flex;
+    gap: 1rem;
+}

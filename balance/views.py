@@ -3,7 +3,7 @@ from datetime import date
 from flask import flash, redirect, render_template, request, url_for
 
 from . import RUTA, app
-from .forms import MovimientoForm
+from .forms import BorrarForm, MovimientoForm
 from .models import DBManager
 
 
@@ -19,21 +19,39 @@ def home():
 # - Operar con la BD -- DONE
 # - Botón de borrado en cada movimiento -- DONE
 # - Plantilla con el resultado -- DONE
-
-@app.route('/borrar/<int:id>')
+# TODO: no funciona el metodo de pregunta para borrar
+@app.route('/borrar/<int:id>', methods=['GET', 'POST'])
 def eliminar(id):
-    db = DBManager(RUTA)
-    ha_ido_bien = db.borrar(id)
-    if ha_ido_bien:
-        flash('El movimiento se ha borrado correctamente',
-              category="exito")
-        return redirect(url_for('home'))
-    # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
-    # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
-    #   - Incluir un texto con la pregunta
-    #   - Incluir un botón aceptar que hace la eliminación y vuelve al listado (con mensaje flash)
-    #   - Incluir un botón cancelar que vuelve al inicio SIN eliminar el movimiento
-    return render_template('borrado.html', resultado=ha_ido_bien)
+    if request.method == 'GET':
+        form = BorrarForm()
+        return render_template('borrado.html', form=form)
+
+    if request.method == 'POST':
+        form = BorrarForm()
+        if form.cancelar:
+            print('hola')
+        if form.aceptar.data:
+            print('holaaaaaaaaaaaaaaaa')
+            db = DBManager(RUTA)
+            ha_ido_bien = db.borrar(id)
+            if ha_ido_bien:
+                flash('El movimiento se ha borrado correctamente',
+                      category="exito")
+                return redirect(url_for('home'))
+
+    # return render_template('borrado.html')
+    # db = DBManager(RUTA)
+    # ha_ido_bien = db.borrar(id)
+    # if ha_ido_bien:
+    #     flash('El movimiento se ha borrado correctamente',
+    #           category="exito")
+    #     return redirect(url_for('home'))
+    # # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
+    # # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
+    # #   - Incluir un texto con la pregunta
+    # #   - Incluir un botón aceptar que hace la eliminación y vuelve al listado (con mensaje flash)
+    # #   - Incluir un botón cancelar que vuelve al inicio SIN eliminar el movimiento
+    # return render_template('borrado.html', resultado=ha_ido_bien)
 
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])

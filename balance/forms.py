@@ -18,3 +18,8 @@ class MovimientoForm(FlaskForm):
             NumberRange(min=0.1, message='No se permiten cantidades inferiores a 10 céntimos')])
 
     submit = SubmitField('Guardar')
+
+
+class BorrarForm(FlaskForm):
+    aceptar = SubmitField('Aceptar')
+    cancelar = SubmitField('Cancelar')
