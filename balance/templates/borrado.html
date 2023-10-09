@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
 {% block contenido%}
-<form action="/borrar/{{ id }}" method="post" novalidate>
-    {{ form.csrf_token }}
+<form action='/borrar/{{ id }}' method="post" novalidate>
 
+    {{ form.csrf_token }}
+    {{ formulario.csrf_token }}
     {{ form.id }}
 
+
     <div class="confirmacion-borrar">
-        <p>¿Está seguro que desea borrar el movimiento?</p>
+        <div>
+            <p>¿Está seguro que desea borrar el movimiento?</p>
+            {{ formulario.concepto.data }}
+        </div>
         {{ form.aceptar }}
         {{ form.cancelar }}
     </div>

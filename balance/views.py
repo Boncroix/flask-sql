@@ -15,43 +15,29 @@ def home():
     return render_template('inicio.html', movs=movimientos)
 
 
-# - Función borrar  -- DONE
-# - Operar con la BD -- DONE
-# - Botón de borrado en cada movimiento -- DONE
-# - Plantilla con el resultado -- DONE
-# TODO: no funciona el metodo de pregunta para borrar
 @app.route('/borrar/<int:id>', methods=['GET', 'POST'])
 def eliminar(id):
     if request.method == 'GET':
+        db = DBManager(RUTA)
+        movimiento = db.obtenerMovimiento(id)
+        formulario = MovimientoForm(data=movimiento)
         form = BorrarForm()
-        return render_template('borrado.html', form=form)
+        return render_template('borrado.html', form=form, id=id, formulario=formulario)
 
     if request.method == 'POST':
         form = BorrarForm()
-        if form.cancelar:
-            print('hola')
+        if form.cancelar.data:
+            return redirect(url_for('home'))
         if form.aceptar.data:
-            print('holaaaaaaaaaaaaaaaa')
             db = DBManager(RUTA)
             ha_ido_bien = db.borrar(id)
             if ha_ido_bien:
                 flash('El movimiento se ha borrado correctamente',
                       category="exito")
                 return redirect(url_for('home'))
-
-    # return render_template('borrado.html')
-    # db = DBManager(RUTA)
-    # ha_ido_bien = db.borrar(id)
-    # if ha_ido_bien:
-    #     flash('El movimiento se ha borrado correctamente',
-    #           category="exito")
-    #     return redirect(url_for('home'))
-    # # TODO: en lugar de pintar en mensaje con su propia plantilla, usar un mensaje flash y volver al listado
-    # # TODO: un poco más difícil? pedir confirmación antes de eliminar un movimiento:
-    # #   - Incluir un texto con la pregunta
-    # #   - Incluir un botón aceptar que hace la eliminación y vuelve al listado (con mensaje flash)
-    # #   - Incluir un botón cancelar que vuelve al inicio SIN eliminar el movimiento
-    # return render_template('borrado.html', resultado=ha_ido_bien)
+            flash('El movimiento no se ha podido borrar de la base de datos',
+                  category="error")
+            return redirect(url_for('home'))
 
 
 @app.route('/editar/<int:id>', methods=['GET', 'POST'])

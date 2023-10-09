@@ -21,5 +21,6 @@ class MovimientoForm(FlaskForm):
 
 
 class BorrarForm(FlaskForm):
+    id = HiddenField()
     aceptar = SubmitField('Aceptar')
     cancelar = SubmitField('Cancelar')
